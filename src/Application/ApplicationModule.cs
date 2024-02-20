@@ -1,5 +1,8 @@
 ﻿using Application.Commands.Expense;
 using Application.Queries.Expense;
+using Application.Validators.Expense;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -10,7 +13,8 @@ public static class ApplicationModule
     {
         services
             .AddCommands()
-            .AddQueries();
+            .AddQueries()
+            .AddValidators();
 
         return services;
     }
@@ -27,6 +31,16 @@ public static class ApplicationModule
     {
         services
             .AddScoped<ExpenseQueryHandler>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddFluentValidationClientsideAdapters();
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssemblyContaining<ExpenseQueryValidator>();
+        ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
 
         return services;
     }
