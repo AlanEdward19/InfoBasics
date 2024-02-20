@@ -1,4 +1,5 @@
 ﻿using Application.Commands.Expense;
+using Application.Commands.FinancialInvestment;
 using Application.Queries.Expense;
 using Application.Queries.MonetaryProjection;
 using Application.Validators.Expense;
@@ -23,7 +24,8 @@ public static class ApplicationModule
     public static IServiceCollection AddCommands(this IServiceCollection services)
     {
         services
-            .AddScoped<ExpenseCommandHandler>();
+            .AddScoped<ExpenseCommandHandler>()
+            .AddScoped<FinancialInvestmentCommandHandler>();
 
         return services;
     }
@@ -32,7 +34,8 @@ public static class ApplicationModule
     {
         services
             .AddScoped<ExpenseQueryHandler>()
-            .AddScoped<MonetaryProjectionQueryHandler>();
+            .AddScoped<MonetaryProjectionQueryHandler>()
+            .AddScoped<FinancialInvestmentQueryHandler>();
 
         return services;
     }
