@@ -10,7 +10,6 @@ namespace AlanzitoInfoBasics.Controllers
     [ApiController]
     public class ExpenseController : ControllerBase
     {
-
         [HttpGet]
         public async Task<IActionResult> Get([FromServices] ExpenseQueryHandler queryHandler, [FromQuery] ExpenseQuery query)
         {
@@ -20,25 +19,25 @@ namespace AlanzitoInfoBasics.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromServices] ExpenseCommandHandler commandHandler, [FromBody] CreateExpenseCommand command)
         {
-            return Ok(await commandHandler.Insert(command));
+            return Created(HttpContext.Request.Path, await commandHandler.Insert(command));
         }
 
         [HttpPut("PayOffInstallment")]
         public async Task<IActionResult> PayOffInstallment([FromServices] ExpenseCommandHandler commandHandler, [FromQuery] Guid installmentId)
         {
             var (success, result) = await commandHandler.PayOffInstallment(installmentId);
-            
-            if(!success)
+
+            if (!success)
                 return NotFound();
 
-            return Ok(result);
+            return Created(HttpContext.Request.Path, result);
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromServices] ExpenseCommandHandler commandHandler, [FromQuery] Guid id, [
             FromBody] UpdateExpenseCommand command)
         {
-            return Ok(await commandHandler.Update(id, command));
+            return Created(HttpContext.Request.Path, commandHandler.Update(id, command));
         }
 
         [HttpPatch]
@@ -51,7 +50,10 @@ namespace AlanzitoInfoBasics.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete([FromServices] ExpenseCommandHandler commandHandler, [FromQuery] Guid id)
         {
-            return Ok(await commandHandler.Delete(id));
+            if (await commandHandler.Delete(id))
+                return NoContent();
+
+            return BadRequest("A Error occurred trying to delete entity");
         }
     }
 }

@@ -8,7 +8,7 @@ namespace AlanzitoInfoBasics.Controllers
     public class MonetaryProjectionController : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetMonetaryProjection([FromServices] MonetaryProjectionQueryHandler queryHandler, 
+        public async Task<IActionResult> Get([FromServices] MonetaryProjectionQueryHandler queryHandler, 
             [FromQuery] MonetaryProjectionQuery query)
         {
             return Ok(await queryHandler.Handle(query));
