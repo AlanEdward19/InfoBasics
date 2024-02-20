@@ -12,19 +12,16 @@ public class ExpenseQueryHandler(DatabaseContext dbContext)
         var values = dbContext.Expenses.AsQueryable();
 
         if (!string.IsNullOrEmpty(query.Name))
-        {
             values = values.Where(x => x.Name == query.Name);
-        }
 
         if (query.DueDate.HasValue)
-        {
             values = values.Where(x => x.DueDate == query.DueDate);
-        }
 
         if (!string.IsNullOrEmpty(query.Frequency))
-        {
             values = values.Where(x => x.Frequency == Enum.Parse<EFrequency>(query.Frequency));
-        }
+
+        if (query.IsPaid.HasValue)
+            values = values.Where(x => x.IsPaid == query.IsPaid);
 
         if (!string.IsNullOrEmpty(query.Value))
         {
