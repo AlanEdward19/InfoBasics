@@ -1,4 +1,5 @@
 ﻿using Application.ViewModels;
+using Domain.Enums;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,11 +25,11 @@ public class ExpenseCommandHandler(DatabaseContext dbContext)
         if (entity is null)
             return null;
 
-        entity.Name = command.Name;
+        entity.Name = command.Name!;
         entity.DueDate = command.DueDate;
-        entity.Frequency = command.Frequency;
-        entity.Value = command.Value;
-        entity.IsPaid = command.IsPaid;
+        entity.Frequency = Enum.Parse<EFrequency>(command.Frequency!);
+        entity.Value = command.Value!.Value;
+        entity.IsPaid = command.IsPaid!.Value;
 
         await dbContext.SaveChangesAsync();
 
@@ -49,8 +50,8 @@ public class ExpenseCommandHandler(DatabaseContext dbContext)
         if(command.DueDate.HasValue)
             entity.DueDate = command.DueDate;
 
-        if(command.Frequency.HasValue)
-            entity.Frequency = command.Frequency.Value;
+        if(!string.IsNullOrWhiteSpace(command.Frequency))
+            entity.Frequency = Enum.Parse<EFrequency>(command.Frequency);
 
         if(command.Value.HasValue)
             entity.Value = command.Value.Value;
