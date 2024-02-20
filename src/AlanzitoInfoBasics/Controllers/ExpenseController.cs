@@ -18,13 +18,13 @@ namespace AlanzitoInfoBasics.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromServices] ExpenseCommandHandler commandHandler, [FromQuery] CreateExpenseCommand command)
+        public async Task<IActionResult> Post([FromServices] ExpenseCommandHandler commandHandler, [FromBody] CreateExpenseCommand command)
         {
             return Ok(await commandHandler.Insert(command));
         }
 
         [HttpPut("PayOffInstallment")]
-        public async Task<IActionResult> PayOffInstallment([FromServices] ExpenseCommandHandler commandHandler, [FromQuery]Guid installmentId)
+        public async Task<IActionResult> PayOffInstallment([FromServices] ExpenseCommandHandler commandHandler, [FromQuery] Guid installmentId)
         {
             var (success, result) = await commandHandler.PayOffInstallment(installmentId);
             
@@ -35,7 +35,8 @@ namespace AlanzitoInfoBasics.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromServices] ExpenseCommandHandler commandHandler, [FromQuery] Guid id,[FromBody] UpdateExpenseCommand command)
+        public async Task<IActionResult> Put([FromServices] ExpenseCommandHandler commandHandler, [FromQuery] Guid id, [
+            FromBody] UpdateExpenseCommand command)
         {
             return Ok(await commandHandler.Update(id, command));
         }
