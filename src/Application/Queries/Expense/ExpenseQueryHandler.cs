@@ -39,7 +39,7 @@ public class ExpenseQueryHandler(DatabaseContext dbContext)
         return result;
     }
 
-    private static bool TryParseComparison(string queryValue, out EComparisonOperator comparison, out double number)
+    public bool TryParseComparison(string queryValue, out EComparisonOperator comparison, out double number)
     {
         comparison = EComparisonOperator.Equals;
 
@@ -72,7 +72,7 @@ public class ExpenseQueryHandler(DatabaseContext dbContext)
         return double.TryParse(queryValue, out number);
     }
 
-    private static IQueryable<Domain.Entities.Expense> ApplyComparison(IQueryable<Domain.Entities.Expense> values, EComparisonOperator comparison, double number)
+    private IQueryable<Domain.Entities.Expense> ApplyComparison(IQueryable<Domain.Entities.Expense> values, EComparisonOperator comparison, double number)
     {
         return comparison switch
         {
