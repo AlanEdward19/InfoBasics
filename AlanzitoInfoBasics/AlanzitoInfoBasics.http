@@ -1,0 +1,6 @@
+@AlanzitoInfoBasics_HostAddress = http://localhost:5123
+
+GET {{AlanzitoInfoBasics_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

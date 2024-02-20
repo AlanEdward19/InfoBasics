@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  alanzitoinfobasics:
+    depends_on: 
+        - "sqlserver"
+    image: ${DOCKER_REGISTRY-}alanzitoinfobasics
+    build:
+      context: .
+      dockerfile: AlanzitoInfoBasics\Dockerfile
+
+    ports:
+        - "5000:5000"
+
+    environment:
+        ASPNETCORE_URLS: "http://+:5000"
+    
+  sqlserver:
+        container_name: 'Database'
+        restart: always
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        environment:
+          MSSQL_SA_PASSWORD: "SenhaPoderosa13"
+          ACCEPT_EULA: "Y"
+          MSSQL_PID: "Developer"
+        ports:
+          - "1433:1433"
+        volumes:
+          - ../volumes/mssql_data:/var/opt/mssql/data
+        networks:
+            - cfka-network
+
+networks:
+  cfka-network:
+    driver: bridge
