@@ -1,7 +1,5 @@
 ﻿using Application.Commands.Expense;
 using Application.Queries.Expense;
-using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AlanzitoInfoBasics.Controllers
