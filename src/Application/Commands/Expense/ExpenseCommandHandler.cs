@@ -43,7 +43,6 @@ public class ExpenseCommandHandler(DatabaseContext dbContext)
         if (entity is null)
             return null;
 
-        
         if(!string.IsNullOrWhiteSpace(command.Name))
             entity.Name = command.Name;
 
