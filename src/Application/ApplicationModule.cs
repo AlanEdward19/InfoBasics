@@ -1,5 +1,6 @@
 ﻿using Application.Commands.Expense;
 using Application.Queries.Expense;
+using Application.Queries.MonetaryProjection;
 using Application.Validators.Expense;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -30,7 +31,8 @@ public static class ApplicationModule
     public static IServiceCollection AddQueries(this IServiceCollection services)
     {
         services
-            .AddScoped<ExpenseQueryHandler>();
+            .AddScoped<ExpenseQueryHandler>()
+            .AddScoped<MonetaryProjectionQueryHandler>();
 
         return services;
     }
