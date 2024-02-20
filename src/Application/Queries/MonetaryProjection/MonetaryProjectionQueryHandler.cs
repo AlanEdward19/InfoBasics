@@ -7,11 +7,12 @@ namespace Application.Queries.MonetaryProjection;
 
 public class MonetaryProjectionQueryHandler(DatabaseContext dbContext)
 {
-    public async Task<List<MonetaryProjectionViewModel>> Handle(MonetaryProjectionQuery query)
+    public async Task<dynamic> Handle(MonetaryProjectionQuery query)
     {
         List<MonetaryProjectionViewModel> result = new();
 
         var expenses = await dbContext.Expenses.Where(x => x.IsPaid == false).ToListAsync();
+        var investmentsProfit = await dbContext.FinancialInvestments.SumAsync(x => x.TotalProfit);
 
         DateTime date = DateTime.Today;
 
@@ -57,7 +58,7 @@ public class MonetaryProjectionQueryHandler(DatabaseContext dbContext)
             totalInAccount -= totalExpenses;
 
             MonetaryProjectionViewModel item = new(date.ToString("MMMM, yyyy"), double.Round(totalInAccount, 2),
-                double.Round(totalExpenses, 2), 0, 0);
+                double.Round(totalExpenses, 2), double.Round(totalInAccount + investmentsProfit, 2));
             result.Add(item);
 
             date = date.AddMonths(1);
@@ -65,6 +66,10 @@ public class MonetaryProjectionQueryHandler(DatabaseContext dbContext)
             i++;
         }
 
-        return result;
+        return new
+        {
+            InvestmentProfit = investmentsProfit,
+            MonetaryProjection = result
+        };
     }
 }
